@@ -22,7 +22,6 @@ services:
       - "host.docker.internal:host-gateway"
     depends_on:
       - database
-      - redis
     tty: true
 
   database:

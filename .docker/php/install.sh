@@ -4,9 +4,10 @@ echo "-------------------------------------------------------------------"
 echo "-                create symfony project                           -"
 echo "-------------------------------------------------------------------"
 symfony self:version
+symfony check:requirements
 
 export APP_ENV=dev
-symfony new web --version=5.4 #--full
+symfony new web --no-git --version=5.4 --php=8.2 --docker=false # --webapp
 
 echo "-------------------------------------------------------------------"
 echo "-                   require packages                              -"
@@ -17,7 +18,7 @@ cp .env .env.local
 #symfony composer config extra.symfony.allow-contrib true
 #symfony composer config allow-plugins.symfony/runtime true
 symfony composer require php:^8.2.0
-symfony composer require twig
+#symfony composer require twig
 symfony composer require --no-interaction doctrine/orm doctrine/doctrine-migrations-bundle:^3.2.4
 
 #symfony/amqp-pack ramsey/uuid-doctrine symfony/mailgun-mailer symfony/mercure-bundle
@@ -39,6 +40,7 @@ echo "-               require dev packages                              -"
 echo "-------------------------------------------------------------------"
 symfony composer require --dev debug symfony/profiler-pack symfony/maker-bundle
 symfony composer require --no-interaction --dev doctrine/doctrine-fixtures-bundle
+
 #symfony composer require --dev codeception/codeception codeception/specify codeception/verify ericmartel/codeception-email-mailhog
 #symfony composer require --dev league/factory-muffin league/factory-muffin-faker
 #symfony composer require --dev flow/jsonpath phpbench/phpbench
