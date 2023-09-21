@@ -6,12 +6,12 @@ if [ ! -d "./src" ]; then
 fi
 
 #rm -rf node_modules package-lock.json
-#npm install --silent --no-progress --non-interactive
+npm install --silent --no-progress --non-interactive
 #npm audit fix
 #npm install --global browser-sync
 #npm run dev
 
-export APP_ENV=dev
+#export APP_ENV=dev
 #rm -rf var vendor composer.lock symfony.lock
 #cp .env.local .env
 #echo "8.2" > .php-version
@@ -23,11 +23,10 @@ export APP_ENV=dev
 echo "-----------------------------------------------------------------------------------------------------------------"
 echo "-                                                composer                                                       -"
 echo "-----------------------------------------------------------------------------------------------------------------"
+symfony composer update --no-interaction
 symfony composer -n check-platform-reqs
-symfony composer update --no-interaction #--no-plugins --no-scripts
-#security-checker security:check
-#symfony check:security
-#symfony console about
+symfony check:security
+symfony console about
 
 echo "-------------------------------------------------------------------"
 echo "-                        waiting for DB                           -"
@@ -99,7 +98,7 @@ symfony check:requirements
 symfony security:check
 #echo | symfony server:ca:install
 #symfony serve --p12=/var/www/certs/localhost.p12
-symfony serve
+symfony serve --daemon
 
 echo "-------------------------------------------------------------------"
 echo "-                        testing                                  -"
@@ -110,6 +109,6 @@ echo "-------------------------------------------------------------------"
 echo "-------------------------------------------------------------------"
 echo "-                        yarn watch                               -"
 echo "-------------------------------------------------------------------"
-#export PATH=node_modules/.bin/:$PATH
-#export NODE_OPTIONS="--max_old_space_size=4096"
-#npm run watch
+npm run watch
+
+tail -f /dev/null

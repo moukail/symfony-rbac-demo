@@ -5,9 +5,11 @@ echo "-                create symfony project                           -"
 echo "-------------------------------------------------------------------"
 symfony self:version
 symfony check:requirements
+symfony console about
 
 export APP_ENV=dev
-symfony new web --no-git --version=5.4 --php=8.2 --docker=false # --webapp
+symfony new web --no-git --version=lts --php=8.2 --docker=false # --webapp
+#symfony new web --php=8.2 --docker=false --demo
 
 echo "-------------------------------------------------------------------"
 echo "-                   require packages                              -"
@@ -17,9 +19,15 @@ cp .env .env.local
 
 #symfony composer config extra.symfony.allow-contrib true
 #symfony composer config allow-plugins.symfony/runtime true
+symfony composer config platform.php 8.2.0
 symfony composer require php:^8.2.0
-#symfony composer require twig
+
+symfony composer require security symfony/twig-bundle
 symfony composer require --no-interaction doctrine/orm doctrine/doctrine-migrations-bundle:^3.2.4
+
+composer require symfony/serializer-pack
+composer require symfony/webpack-encore-bundle
+npm install bootstrap --save-dev
 
 #symfony/amqp-pack ramsey/uuid-doctrine symfony/mailgun-mailer symfony/mercure-bundle
 #symfony composer require --no-interaction -W sensio/framework-extra-bundle
@@ -47,6 +55,22 @@ symfony composer require --no-interaction --dev doctrine/doctrine-fixtures-bundl
 #symfony composer require --dev vimeo/psalm
 
 rm -rf .git
+
+symfony composer require security
+#symfony console make:user
+#symfony console make:security:form-login
+
+#composer require form validator annotations
+#symfony console make:crud User
+
+#composer require symfony/mailer symfonycasts/verify-email-bundle
+#symfony console make:registration-form
+
+#composer require symfonycasts/reset-password-bundle
+#symfony console make:reset-password
+
+#symfony console doctrine:migrations:diff --no-interaction
+
 cd ..
 
 chmod -R a+rw web

@@ -6,6 +6,8 @@ services:
     build:
       context: .docker/php
       dockerfile: Dockerfile
+    ports:
+      - "8000"
     expose:
       - 8000
     volumes:
@@ -15,7 +17,7 @@ services:
       - APP_ENV=dev
       - APP_DEBUG=1
       - PHP_IDE_CONFIG=serverName=rbac-web
-      - DATABASE_URL=mysql://root:root@contacts-database:3306/rbac
+      - DATABASE_URL=mysql://root:root@rbac-database:3306/rbac
     #env_file:
     #  - ./web/.env.develop
     extra_hosts:
@@ -28,7 +30,7 @@ services:
     image: mysql:8.1
     container_name: rbac-database
     ports:
-      - 3306
+      - "3306"
     expose:
       - 3306
     volumes:
@@ -46,5 +48,5 @@ volumes:
 
 networks:
   default:
-    name: moukail
+    name: jcid
     external: true
