@@ -1,0 +1,42 @@
+{% extends 'base.html.twig' %}
+
+{% block title %}Edit Role{% endblock %}
+{% block body_class %}d-flex flex-column h-100{% endblock %}
+{% block body %}
+
+    <style>
+        /* Custom page CSS
+-------------------------------------------------- */
+        /* Not required for template or sticky footer method. */
+
+        main > .container {
+            padding: 60px 15px 0;
+        }
+
+        .form-check {
+            width: 250px;
+            float:left;
+        }
+    </style>
+
+    {% include 'header.html.twig' %}
+
+    <!-- Begin page content -->
+    <main class="flex-shrink-0">
+        <div class="container">
+            <h2 class="mt-5">Edit Role</h2>
+            {{ include('role/_form.html.twig', {'button_label': 'Update'}) }}
+
+            <a href="{{ path('app_role_index') }}">back to list</a>
+
+            {{ include('role/_delete_form.html.twig') }}
+        </div>
+    </main>
+
+    <footer class="footer mt-auto py-3 bg-body-tertiary">
+        <div class="container">
+            <span class="text-body-secondary">Place sticky footer content here.</span>
+        </div>
+    </footer>
+
+{% endblock %}

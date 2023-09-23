@@ -1,0 +1,36 @@
+{% extends 'base.html.twig' %}
+
+{% block title %}New Role{% endblock %}
+{% block body_class %}d-flex flex-column h-100{% endblock %}
+{% block body %}
+
+    <style>
+        /* Custom page CSS
+-------------------------------------------------- */
+        /* Not required for template or sticky footer method. */
+
+        main > .container {
+            padding: 60px 15px 0;
+        }
+
+        .form-check {
+            width: 250px;
+            float:left;
+        }
+    </style>
+
+    {% include 'header.html.twig' %}
+
+    <!-- Begin page content -->
+    <main class="flex-shrink-0">
+        <div class="container">
+            <h2 class="mt-5">Create new Role</h2>
+            {{ include('role/_form.html.twig') }}
+
+            <a href="{{ path('app_role_index') }}">back to list</a>
+        </div>
+    </main>
+
+    {% include 'footer.html.twig' %}
+
+{% endblock %}

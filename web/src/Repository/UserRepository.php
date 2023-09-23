@@ -39,6 +39,24 @@ class UserRepository extends ServiceEntityRepository implements PasswordUpgrader
         $this->getEntityManager()->persist($user);
         $this->getEntityManager()->flush();
     }
+    public function hasUserPermission(User $user, string $permission): bool
+    {
+        $result = $this->createQueryBuilder('u')
+            ->join('u.role', 'r')
+            ->join('r.permissions', 'p')
+            ->where('u.id = :userId')
+            ->andWhere('p.identifier = :permission')
+            ->setParameters([
+                'userId' => $user->getId(),
+                'permission' => $permission
+            ])
+            ->getQuery()
+            ->getOneOrNullResult()
+        ;
+
+        return $result !== null;
+    }
+
 
 //    /**
 //     * @return User[] Returns an array of User objects

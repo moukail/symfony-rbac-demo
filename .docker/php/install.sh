@@ -70,6 +70,11 @@ symfony composer require security
 #symfony console make:reset-password
 
 #symfony console doctrine:migrations:diff --no-interaction
+echo "-------------------------------------------------------------------"
+echo "-                   Available recipes.                            -"
+echo "-------------------------------------------------------------------"
+composer recipes
+composer recipes symfony/webpack-encore-bundle
 
 cd ..
 
