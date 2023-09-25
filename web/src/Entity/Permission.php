@@ -21,6 +21,13 @@ class Permission
     #[ORM\Column(length: 255, unique: true)]
     private ?string $identifier = null;
 
+    #[ORM\ManyToOne(targetEntity: Permission::class, inversedBy: "children")]
+    #[ORM\JoinColumn(name: "parent", referencedColumnName: "id")]
+    protected Permission $parent;
+
+    #[ORM\OneToMany(targetEntity: Permission::class, mappedBy: "parent")]
+    private Collection $children;
+
     public function getId(): ?int
     {
         return $this->id;
@@ -45,6 +52,29 @@ class Permission
     public function setIdentifier(?string $identifier): static
     {
         $this->identifier = $identifier;
+        return $this;
+    }
+
+    public function getParent(): Permission
+    {
+        return $this->parent;
+    }
+
+    public function setParent(Permission $parent): static
+    {
+        $this->parent = $parent;
+        return $this;
+    }
+
+    public function getChildren(): Collection
+    {
+        return $this->children;
+    }
+
+    public function addChild(Permission $child): static
+    {
+        $this->children[] = $child;
+        $child->setParent($this);
         return $this;
     }
 }

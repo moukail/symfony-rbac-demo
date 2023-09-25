@@ -41,18 +41,31 @@ class UserRepository extends ServiceEntityRepository implements PasswordUpgrader
     }
     public function hasUserPermission(User $user, string $permission): bool
     {
-        $result = $this->createQueryBuilder('u')
+        /*
+            SELECT *
+            FROM medewerkers m
+            JOIN roles r on m.role_id = r.id
+            JOIN roles_permissions rp on r.id = rp.role_id
+            JOIN permissions parent on rp.permission_id = parent.id
+            LEFT JOIN permissions child ON parent.id = child.parent
+            WHERE m.email = 'ismail@jcid.nl' AND (parent.identifier = 'LIST_USERS' OR child.identifier = 'LIST_USERS')
+            ;
+         */
+
+        $query = $this->createQueryBuilder('u')
             ->join('u.role', 'r')
-            ->join('r.permissions', 'p')
+            ->join('r.permissions', 'parent')
+            ->leftJoin('parent.children', 'child')
             ->where('u.id = :userId')
-            ->andWhere('p.identifier = :permission')
+            ->andWhere('parent.identifier = :permission OR child.identifier = :permission')
             ->setParameters([
                 'userId' => $user->getId(),
                 'permission' => $permission
             ])
             ->getQuery()
-            ->getOneOrNullResult()
         ;
+
+        $result = $query->getOneOrNullResult();
 
         return $result !== null;
     }

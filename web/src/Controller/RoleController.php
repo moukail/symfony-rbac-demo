@@ -6,6 +6,7 @@ use App\Entity\Role;
 use App\Form\RoleType;
 use App\Repository\RoleRepository;
 use Doctrine\ORM\EntityManagerInterface;
+use Sensio\Bundle\FrameworkExtraBundle\Configuration\IsGranted;
 use Symfony\Bundle\FrameworkBundle\Controller\AbstractController;
 use Symfony\Component\HttpFoundation\Request;
 use Symfony\Component\HttpFoundation\Response;
@@ -15,6 +16,7 @@ use Symfony\Component\Routing\Annotation\Route;
 class RoleController extends AbstractController
 {
     #[Route('/', name: 'app_role_index', methods: ['GET'])]
+    #[IsGranted('LIST_ROLES')]
     public function index(RoleRepository $roleRepository): Response
     {
         return $this->render('role/index.html.twig', [
@@ -23,6 +25,7 @@ class RoleController extends AbstractController
     }
 
     #[Route('/new', name: 'app_role_new', methods: ['GET', 'POST'])]
+    #[IsGranted('ADD_ROLE')]
     public function new(Request $request, EntityManagerInterface $entityManager): Response
     {
         $role = new Role();
@@ -43,6 +46,7 @@ class RoleController extends AbstractController
     }
 
     #[Route('/{id}', name: 'app_role_show', methods: ['GET'])]
+    #[IsGranted('VIEW_ROLE')]
     public function show(Role $role): Response
     {
         return $this->render('role/show.html.twig', [
@@ -51,6 +55,7 @@ class RoleController extends AbstractController
     }
 
     #[Route('/{id}/edit', name: 'app_role_edit', methods: ['GET', 'POST'])]
+    #[IsGranted('EDIT_ROLE')]
     public function edit(Request $request, Role $role, EntityManagerInterface $entityManager): Response
     {
         $form = $this->createForm(RoleType::class, $role);
@@ -69,6 +74,7 @@ class RoleController extends AbstractController
     }
 
     #[Route('/{id}', name: 'app_role_delete', methods: ['POST'])]
+    #[IsGranted('DELETE_ROLE')]
     public function delete(Request $request, Role $role, EntityManagerInterface $entityManager): Response
     {
         if ($this->isCsrfTokenValid('delete'.$role->getId(), $request->request->get('_token'))) {
