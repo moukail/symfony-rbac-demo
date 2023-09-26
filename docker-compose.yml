@@ -42,7 +42,7 @@ services:
 
   proxy:
     image: caddy:2.6-alpine
-    container_name: reverse_proxy
+    container_name: rbac-reverse-proxy
     ports:
       - 80:80
     volumes:
