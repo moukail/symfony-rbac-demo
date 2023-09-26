@@ -48,7 +48,6 @@ services:
     volumes:
       - ./.docker/Caddyfile:/etc/caddy/Caddyfile
 
-
 volumes:
   database:
     driver: local
