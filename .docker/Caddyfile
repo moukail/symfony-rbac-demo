@@ -1,0 +1,3 @@
+symfony.dev.local:80 {
+  reverse_proxy rbac-web:8000
+}
