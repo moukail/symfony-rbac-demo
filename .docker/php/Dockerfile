@@ -1,4 +1,4 @@
-FROM node:20.6-alpine3.18 AS node
+FROM node:20.7-alpine3.18 AS node
 FROM php:8.2-fpm-alpine3.18
 
 ENV TIMEZONE 'Europe/Amsterdam'
