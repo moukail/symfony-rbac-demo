@@ -5,6 +5,10 @@ if [ ! -d "./src" ]; then
   . /home/install.sh
 fi
 
+mkcert -install
+#mkcert -key-file symfony_key.pem -cert-file symfony_cert.pem symfony.dev.local localhost 127.0.0.1 ::1
+#openssl pkcs12 -export -out certificate.p12 -inkey symfony_key.pem -in symfony_cert.pem
+
 #rm -rf node_modules package-lock.json
 npm install --silent --no-progress --non-interactive
 #npm audit fix
@@ -97,8 +101,7 @@ symfony local:php:refresh
 symfony check:requirements
 symfony security:check
 #echo | symfony server:ca:install
-#symfony serve --p12=/var/www/certs/localhost.p12
-symfony serve --daemon
+symfony serve --daemon --p12=certificate.p12
 
 echo "-------------------------------------------------------------------"
 echo "-                        testing                                  -"

@@ -42,6 +42,9 @@ RUN wget https://get.symfony.com/cli/installer -O - | bash && mv /root/.symfony5
 RUN wget http://codeception.com/codecept.phar -O /usr/bin/codecept && chmod a+x /usr/bin/codecept
 #source <(codecept _completion --generate-hook --program codecept)
 
+# mkcert
+RUN wget https://dl.filippo.io/mkcert/v1.4.4?for=linux/amd64 -O mkcert && chmod a+x ./mkcert && mv ./mkcert /usr/bin/mkcert
+
 # Basic smoke test
 COPY --from=node /usr/local /usr/local
 COPY --from=node /opt /opt
