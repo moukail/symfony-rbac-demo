@@ -28,12 +28,6 @@ The error output from the command was:
 
 /sbin/mount.vboxsf: mounting failed with the error: No such device
 ```
-
-### traefik dashboard
-https://traefik.app.localhost/dashboard/#/
-
-### mkcert
-https://knplabs.com/en/blog/how-to-handle-https-with-docker-compose-and-mkcert-for-local-development/
 #### Ubuntu
 
 ```bash

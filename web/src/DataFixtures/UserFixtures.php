@@ -22,7 +22,7 @@ class UserFixtures extends Fixture implements DependentFixtureInterface
         $user = (new User())
             ->setFirstName('Admin')
             ->setLastName('Admin')
-            ->setEmail('admin@jcid.nl')
+            ->setEmail('ismail@moukafih.nl')
             ->setInactive(false)
             ->setPassword($password)
             ->setRole($role)
