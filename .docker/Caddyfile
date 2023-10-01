@@ -1,3 +1,0 @@
-symfony.dev.local:443 {
-  reverse_proxy rbac-web:8000
-}

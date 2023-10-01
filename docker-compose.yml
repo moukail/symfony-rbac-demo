@@ -1,91 +1,53 @@
 version: '3.9'
 services:
   web:
-    container_name: rbac-web
+    container_name: $HOST_NAME
     user: root
     build:
       context: .docker/php
       dockerfile: Dockerfile
-    ports:
-      - "8000"
     expose:
       - 8000
     volumes:
       - ./web:/var/www
       #- vendor:/var/www/vendor
-      - ./certs:/var/www/certs
-    environment:
-      - APP_ENV=dev
-      - APP_DEBUG=1
-      - PHP_IDE_CONFIG=serverName=symfony-web
-      - DATABASE_URL=mysql://root:root@rbac-database:3306/rbac
-    #env_file:
-    #  - ./web/.env.develop
-    labels:
-      - "traefik.enable=true"
-      - "traefik.http.routers.symfony.rule=Host(`symfony.app.localhost`)"
-      - "traefik.http.routers.symfony.tls=true"
+    env_file:
+      - ./.env
     extra_hosts:
       - "host.docker.internal:host-gateway"
     depends_on:
       - database
+    networks:
+      - traefik_net
+    labels:
+      - "traefik.enable=true"
+      - "traefik.http.routers.symfony.rule=Host(`symfony.app.localhost`)"
+      - "traefik.http.routers.symfony.tls=true"
     tty: true
 
   database:
     image: mysql:8.1
-    container_name: rbac-database
+    container_name: $DATABASE_HOST
+    ports:
+      - $DATABASE_PORT
     expose:
-      - 3306
+      - $DATABASE_PORT
     volumes:
       - database:/var/lib/mysql
+      - ./certs:/etc/mysql/certs
       #- ./.docker/data:/docker-entrypoint-initdb.d
     environment:
       - MYSQL_ROOT_PASSWORD=root
-      - MYSQL_DATABASE=rbac
-    labels:
-    - "traefik.enable=true"
-    - "traefik.tcp.routers.mariadb.rule=HostSNI(`database.app.localhost`)"
-    - "traefik.tcp.routers.mariadb.entrypoints=mysql"
-    - "traefik.tcp.routers.mariadb.service=mariadb-svc"
-    - "traefik.tcp.services.mariadb-svc.loadbalancer.server.port=3306"
-
- # proxy:
- #   image: caddy:2.6-alpine
- #   container_name: rbac-reverse-proxy
- #   ports:
- #     - 80:80
-  #  volumes:
-  #    - ./.docker/Caddyfile:/etc/caddy/Caddyfile
-
-  reverse-proxy:
-    image: traefik:v2.4.7
-    container_name: traefik
-    labels:
-      - "traefik.enable=true"
-      - "traefik.http.routers.traefik=true"
-      - "traefik.http.routers.traefik.tls=true"
-      - "traefik.http.services.traefik.loadbalancer.server.port=8080"
-    ports:
-      - "80:80"
-      - "443:443"
-      - "3306:3306"
-    restart: unless-stopped
-    security_opt:
-      - no-new-privileges:true
-    volumes:
-      - ./.docker/traefik/dynamic_conf.yaml:/etc/traefik/dynamic_conf.yaml:ro
-      - ./.docker/traefik/traefik.yaml:/etc/traefik/traefik.yaml:ro
-      - ./certs:/etc/certs:ro
-      - /var/run/docker.sock:/var/run/docker.sock:ro
+      - MYSQL_DATABASE=$DATABASE_NAME
+    networks:
+      - traefik_net
 
 volumes:
   database:
-    driver: local
-  certs:
     driver: local
   vendor:
     driver: local
 
 networks:
-  default:
-    name: moukail
+  traefik_net:
+    external: true

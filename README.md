@@ -39,7 +39,7 @@ https://knplabs.com/en/blog/how-to-handle-https-with-docker-compose-and-mkcert-f
 ```bash
 sudo apt install mkcert libnss3-tools
 mkcert -install
-mkcert -cert-file certs/symfony_cert.pem -key-file certs/symfony_key.pem "app.localhost" "*.app.localhost" "domain.local" "*.domain.local"
+mkcert -cert-file certs/symfony_cert.pem -key-file certs/symfony_key.pem "app.localhost" "*.app.localhost"
 openssl pkcs12 -export -out certs/certificate.p12 -inkey certs/symfony_key.pem -in certs/symfony_cert.pem
 ```
 

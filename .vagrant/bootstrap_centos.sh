@@ -6,6 +6,22 @@ PHP_V=8.2
 
 sudo dnf makecache --refresh
 sudo dnf -y update
+
+# Check if firewalld is installed:
+#sudo systemctl is-enabled firewalld
+sudo dnf install firewalld
+
+# Enable and start firewalld:
+sudo systemctl enable firewalld
+sudo systemctl start firewalld
+# Allow port 80 (HTTP):
+sudo firewall-cmd --add-port=8000/tcp --permanent
+# Reload firewalld to apply the changes:
+sudo firewall-cmd --reload
+
+# Check the status of the firewall rules:
+sudo firewall-cmd --list-ports
+
 sudo dnf -y install nano unzip libxml2-devel sqlite-devel libcurl-devel libpng-devel  #libsodium-devel
 sudo dnf --enablerepo=crb -y install libzip-devel oniguruma-devel
 
@@ -34,12 +50,11 @@ cd .. && rm -rf xdebug-$XDEBUG_VER.tar.gz xdebug-$XDEBUG_VER
 cat << EOF > /etc/php/$PHP_V/cli/conf.d/xdebug.ini
 zend_extension=xdebug.so
 xdebug.mode=debug
+xdebug.idekey=PHPSTORM
 xdebug.start_with_request=trigger
 xdebug.client_host=10.0.2.2
 xdebug.client_port=9003
 EOF
-
-php -v
 
 # Composer
 curl -sS https://getcomposer.org/installer | php -- --install-dir=/usr/bin/ --filename=composer

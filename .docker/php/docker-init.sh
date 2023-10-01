@@ -1,61 +1,31 @@
 #!/usr/bin/env bash
 
-# create new project
-if [ ! -d "./src" ]; then
+# create new project if not exists
+if [ ! -d "./public" ]; then
   . /home/install.sh
 fi
 
-#mkcert -install
-#mkcert -key-file /var/www/certs/symfony_key.pem -cert-file /var/www/certs/symfony_cert.pem "app.localhost" "*.app.localhost" "domain.local" "*.domain.local"
-#openssl pkcs12 -export -out certificate.p12 -inkey symfony_key.pem -in symfony_cert.pem
-
-#rm -rf node_modules package-lock.json
-npm install --silent --no-progress --non-interactive
-#npm audit fix
-#npm install --global browser-sync
-#npm run dev
-
-#export APP_ENV=dev
-#rm -rf var vendor composer.lock symfony.lock
 #cp .env.local .env
-#echo "8.2" > .php-version
 
-#symfony --no-interaction self:update
-#symfony self:version
-#symfony self:cleanup
-
-echo "-----------------------------------------------------------------------------------------------------------------"
-echo "-                                                composer                                                       -"
-echo "-----------------------------------------------------------------------------------------------------------------"
+echo "--------------------------------------------------------------------"
+echo "-                            composer                              -"
+echo "--------------------------------------------------------------------"
+composer remove --unused
+composer validate
 symfony composer install --no-interaction
 symfony composer -n check-platform-reqs
-symfony check:security
-symfony console about
 
 echo "-------------------------------------------------------------------"
 echo "-                        waiting for DB                           -"
 echo "-------------------------------------------------------------------"
-while ! nc -z rbac-database 3306; do sleep 1; done
+while ! nc -z $DATABASE_HOST $DATABASE_PORT; do sleep 1; done
+
 echo "-------------------------------------------------------------------"
 echo "-                        prepare the DB                           -"
 echo "-------------------------------------------------------------------"
-#symfony console doctrine:database:drop --if-exists --force
 symfony console doctrine:database:create --if-not-exists
 symfony console doctrine:migrations:migrate --no-interaction
 symfony console doctrine:fixtures:load --no-interaction -vvv
-
-#symfony console doctrine:database:drop --if-exists --force
-#symfony console doctrine:database:create --if-not-exists
-#symfony console doctrine:migrations:up-to-date
-#symfony console doctrine:migrations:migrate --allow-no-migration --no-interaction
-#symfony console doctrine:schema:update --force
-#symfony console doctrine:schema:validate
-#symfony console doctrine:fixtures:load --no-interaction
-#nohup symfony console thruway:router:start >/dev/null 2>&1 &
-
-#export PHP_IDE_CONFIG="serverName=your-server-name-configured-in-php-storm"
-#export XDEBUG_CONFIG="remote_host=host.docker.internal idekey=PHPSTORM"
-#export XDEBUG_SESSION_START=10219
 
 echo "-------------------------------------------------------------------"
 echo "-                        php-cs-fixer                             -"
@@ -92,26 +62,27 @@ echo "-------------------------------------------------------------------"
 echo "-------------------------------------------------------------------"
 echo "-                        website is ready                         -"
 echo "-------------------------------------------------------------------"
-#symfony proxy:start
-#symfony proxy:domain:attach my-domain
-#HTTPS_PROXY=http://127.0.0.1:7080 curl https://my-domain.wip
 chmod -R a+rw ./
 symfony local:php:list
 symfony local:php:refresh
-symfony check:requirements
-symfony security:check
-#echo | symfony server:ca:install
-symfony serve --daemon #--p12=/var/www/certs/certificate.p12
+symfony local:check:requirements
+symfony local:check:security
+symfony console about
+
+symfony serve
+symfony local:server:status
+symfony local:server:list
 
 echo "-------------------------------------------------------------------"
 echo "-                        testing                                  -"
 echo "-------------------------------------------------------------------"
-#codecept clean
-#codecept run --steps --debug -vvv --coverage --coverage-xml --coverage-html
+codecept clean
+codecept run --steps --debug -vvv --coverage --coverage-xml --coverage-html
 
 echo "-------------------------------------------------------------------"
 echo "-                        yarn watch                               -"
 echo "-------------------------------------------------------------------"
-npm run watch
+npm install --non-interactive
+yarn watch
 
 tail -f /dev/null

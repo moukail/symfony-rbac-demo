@@ -1,13 +1,17 @@
 Vagrant.configure("2") do |config|
   config.vm.box = "generic/centos9s"
   projectDirectory = "/var/www/"
-  config.vm.provision :shell, path: ".vagrant/bootstrap.sh"
-  config.vm.synced_folder '.', projectDirectory
 
-  config.vm.network :private_network, ip: '192.168.2.50', auto_network: true
-  config.vm.network :forwarded_port, guest: 80, host: 8080, id: "web"
-  #config.vm.hostname = "moukafih.nl"
+  # Provisioner to run init.sh script
+  config.vm.provision "shell", path: ".vagrant/bootstrap_centos.sh"
 
+  # Synced folder to share your project files
+  config.vm.synced_folder './', projectDirectory
+
+  # Forward port 8000 from the VM to port 8080 on the host
+  config.vm.network "forwarded_port", guest: 8000, host: 8000
+
+  # Disable SSH key insertion
   config.ssh.insert_key = false
 
   config.vm.provider "virtualbox" do |v|
@@ -15,10 +19,10 @@ Vagrant.configure("2") do |config|
     v.cpus = 1
   end
 
-  config.trigger.after :up do |trigger|
+  # Trigger to run init.sh script after VM is up
+  config.trigger.after :up, :reload do |trigger|
     trigger.run_remote = {
-        :inline => "su - vagrant -c 'cd " + projectDirectory + " && .vagrant/init.sh'"
+      inline: "su - vagrant -c 'cd #{projectDirectory} && .vagrant/init.sh'"
     }
   end
-
 end
