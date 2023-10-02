@@ -6,6 +6,10 @@
  */
 
 // any CSS you import will output into a single css file (app.css in this case)
-import './styles/app.scss';
+import './scss/app.scss';
+import './scss/base.scss';
+
+import './js/color_mode';
+
 require('bootstrap');
 require('chart.js');

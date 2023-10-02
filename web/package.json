@@ -1,4 +1,7 @@
 {
+    "dependencies": {
+        "chart.js": "^4.4.0"
+    },
     "devDependencies": {
         "@babel/core": "^7.22.20",
         "@babel/preset-env": "^7.22.20",
@@ -19,8 +22,5 @@
         "dev": "encore dev",
         "watch": "encore dev --watch",
         "build": "encore production --progress"
-    },
-    "dependencies": {
-        "chart.js": "^4.4.0"
     }
 }
