@@ -25,7 +25,7 @@ class Permission
     #[ORM\JoinColumn(name: "parent", referencedColumnName: "id")]
     protected Permission $parent;
 
-    #[ORM\OneToMany(targetEntity: Permission::class, mappedBy: "parent")]
+    #[ORM\OneToMany(mappedBy: "parent", targetEntity: Permission::class)]
     private Collection $children;
 
     public function getId(): ?int

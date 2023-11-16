@@ -5,10 +5,6 @@
 {% block body %}
 
     <style>
-        /* Custom page CSS
--------------------------------------------------- */
-        /* Not required for template or sticky footer method. */
-
         main > .container {
             padding: 60px 15px 0;
         }
@@ -17,7 +13,7 @@
     {% include 'header.html.twig' %}
 
     <!-- Begin page content -->
-    <main class="flex-shrink-0">
+    <main>
         <div class="container">
             <h2 class="mt-5">Roles</h2>
             <a href="{{ path('app_role_new') }}">Create new</a>

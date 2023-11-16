@@ -68,9 +68,16 @@
                         <a class="nav-link fw-bold py-1 px-0" href="{{ path('app_login') }}">Login</a>
                     {% endif %}
                     {% if is_granted('IS_AUTHENTICATED_FULLY') %}
+
+                    {% if is_granted('VIEW_DASHBOARD') %}
                         <a class="nav-link fw-bold py-1 px-0" href="{{ path('app_dashboard') }}">Dashboard</a>
-                        <a class="nav-link fw-bold py-1 px-0" href="{{ path('app_user_index') }}">Users</a>
+                    {% endif %}
+                    {% if is_granted('LIST_ROLES') %}
                         <a class="nav-link fw-bold py-1 px-0" href="{{ path('app_role_index') }}">Roles</a>
+                    {% endif %}
+                    {% if is_granted('LIST_USERS') %}
+                        <a class="nav-link fw-bold py-1 px-0" href="{{ path('app_user_index') }}">Users</a>
+                    {% endif %}
                         <a class="nav-link fw-bold py-1 px-0" href="{{ path('app_logout') }}">Logout</a>
                     {% endif %}
                 </nav>
