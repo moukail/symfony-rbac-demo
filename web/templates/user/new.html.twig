@@ -22,26 +22,13 @@
             <h2 class="mt-5">Create new User</h2>
             {#{{ include('user/_form.html.twig') }}#}
 
-            {{ form_start(form) }}
+            {{ form_start(form, {'attr': {'novalidate': 'novalidate'}}) }}
                 {{ form_row(form.email) }}
                 {{ form_row(form.first_name) }}
                 {{ form_row(form.last_name) }}
-                {{ form_row(form.plainPassword.first) }}
-                {{ form_row(form.plainPassword.second) }}
+                {{ form_row(form.password.first) }}
+                {{ form_row(form.password.second) }}
                 {{ form_row(form.role) }}
-                {#<div class="mb-3">
-                    <label for="exampleInputEmail1" class="form-label">Email address</label>
-                    <input type="email" class="form-control" id="exampleInputEmail1" aria-describedby="emailHelp">
-                    <div id="emailHelp" class="form-text">We'll never share your email with anyone else.</div>
-                </div>
-                <div class="mb-3">
-                    <label for="exampleInputPassword1" class="form-label">Password</label>
-                    <input type="password" class="form-control" id="exampleInputPassword1">
-                </div>
-                <div class="mb-3 form-check">
-                    <input type="checkbox" class="form-check-input" id="exampleCheck1">
-                    <label class="form-check-label" for="exampleCheck1">Check me out</label>
-                </div>#}
                 <button type="submit" class="btn btn-primary">{{ button_label|default('Save') }}</button>
             {{ form_end(form) }}
 

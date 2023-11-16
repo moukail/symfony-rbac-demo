@@ -21,13 +21,12 @@ class UserType extends AbstractType
             //->add('roles')
             ->add('first_name')
             ->add('last_name')
-            ->add('plainPassword', RepeatedType::class, [
-                'mapped' => false,
+            ->add('password', RepeatedType::class, [
                 'type' => PasswordType::class,
                 'required' => true,
                 'first_options' => ['label' => 'Password'],
                 'second_options' => ['label' => 'Confirm password'],
-                'invalid_message' => 'they are not the same',
+                'invalid_message' => 'the password is not the same',
             ])
             ->add('role', EntityType::class, [
                 'class' => Role::class,

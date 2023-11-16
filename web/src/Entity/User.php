@@ -9,6 +9,8 @@ use Doctrine\ORM\Mapping as ORM;
 use Symfony\Component\Security\Core\User\PasswordAuthenticatedUserInterface;
 use Symfony\Component\Security\Core\User\UserInterface;
 use Symfony\Component\Serializer\Annotation\Groups;
+use Symfony\Component\Validator\Constraints\Email;
+use Symfony\Component\Validator\Constraints\NotBlank;
 
 #[ORM\Entity(repositoryClass: UserRepository::class)]
 class User implements UserInterface, PasswordAuthenticatedUserInterface
@@ -17,11 +19,12 @@ class User implements UserInterface, PasswordAuthenticatedUserInterface
     #[ORM\GeneratedValue]
     #[ORM\Column]
     #[Groups(["user", "manager"])]
-    private ?int $id = null;
+    private ?int $id;
 
+    #[Email]
     #[ORM\Column(length: 180, unique: true)]
     #[Groups(["user", "manager"])]
-    private ?string $email = null;
+    private ?string $email;
 
 /*    #[ORM\ManyToMany(targetEntity: Role::class)]
     #[ORM\JoinTable(name:"user_roles")]
@@ -33,17 +36,20 @@ class User implements UserInterface, PasswordAuthenticatedUserInterface
     #[ORM\JoinColumn(nullable:false)]
     private Role $role;
 
+    #[NotBlank]
     #[ORM\Column]
     #[Groups(["user", "manager"])]
-    private ?string $password = null;
+    private ?string $password;
 
+    #[NotBlank]
     #[ORM\Column(length: 255)]
     #[Groups(["user", "manager"])]
-    private ?string $first_name = null;
+    private ?string $first_name;
 
+    #[NotBlank]
     #[ORM\Column(length: 255)]
     #[Groups(["user", "manager"])]
-    private ?string $last_name = null;
+    private ?string $last_name;
 
     #[ORM\Column]
     #[Groups(["user", "manager"])]
