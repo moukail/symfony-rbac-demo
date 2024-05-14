@@ -4,6 +4,8 @@ namespace App\Repository;
 
 use App\Entity\User;
 use Doctrine\Bundle\DoctrineBundle\Repository\ServiceEntityRepository;
+use Doctrine\Common\Collections\ArrayCollection;
+use Doctrine\ORM\Query\Parameter;
 use Doctrine\Persistence\ManagerRegistry;
 use Symfony\Component\Security\Core\Exception\UnsupportedUserException;
 use Symfony\Component\Security\Core\User\PasswordAuthenticatedUserInterface;
@@ -58,10 +60,10 @@ class UserRepository extends ServiceEntityRepository implements PasswordUpgrader
             ->leftJoin('parent.children', 'child')
             ->where('u.id = :userId')
             ->andWhere('parent.identifier = :permission OR child.identifier = :permission')
-            ->setParameters([
-                'userId' => $user->getId(),
-                'permission' => $permission
-            ])
+            ->setParameters(new ArrayCollection([
+                new Parameter('userId', $user->getId()),
+                new Parameter('permission', $permission)
+            ]))
             ->getQuery()
         ;
 
