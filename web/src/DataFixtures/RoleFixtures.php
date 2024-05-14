@@ -12,17 +12,18 @@ class RoleFixtures extends Fixture implements DependentFixtureInterface
 {
     public function load(ObjectManager $manager): void
     {
-        $manageRoles = $manager->getRepository(Permission::class)->findOneBy(['identifier' => 'MANAGE_ROLES']);
         $manageUsers = $manager->getRepository(Permission::class)->findOneBy(['identifier' => 'MANAGE_USERS']);
         $viewDashboard = $manager->getRepository(Permission::class)->findOneBy(['identifier' => 'VIEW_DASHBOARD']);
 
-        $role = (new Role())
+        $adminRole = (new Role())
             ->setName(Role::ROLE_ADMIN)
-            ->addPermission($manageRoles)
+            ->addPermission(
+                $this->getReference('manage-roles-permission', Permission::class)
+            )
             ->addPermission($manageUsers)
             ->addPermission($viewDashboard)
         ;
-        $manager->persist($role);
+        $manager->persist($adminRole);
 
         $role = new Role();
         $role->setName(Role::ROLE_MANAGER);
@@ -33,8 +34,13 @@ class RoleFixtures extends Fixture implements DependentFixtureInterface
         $manager->persist($role);
 
         $manager->flush();
+
+        $this->addReference('admin-role', $adminRole);
     }
 
+    /**
+     * @return list<class-string<Fixture>>
+     */
     public function getDependencies(): array
     {
         return [

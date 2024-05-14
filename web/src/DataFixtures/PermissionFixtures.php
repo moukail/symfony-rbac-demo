@@ -10,50 +10,54 @@ class PermissionFixtures extends Fixture
 {
     public function load(ObjectManager $manager): void
     {
-        $permission = (new Permission())
+        $viewDashboardPermission = (new Permission())
             ->setIdentifier('VIEW_DASHBOARD')
             ->setLabel('View dashboard')
         ;
-        $manager->persist($permission);
+        $manager->persist($viewDashboardPermission);
 
-        $parentPermission1 = (new Permission())
+        $this->addReference('view-dashboard-permission', $viewDashboardPermission);
+
+        $manageRolesPermission = (new Permission())
             ->setIdentifier('MANAGE_ROLES')
             ->setLabel('Manage roles')
         ;
-        $manager->persist($parentPermission1);
+        $manager->persist($manageRolesPermission);
+
+        $this->addReference('manage-roles-permission', $manageRolesPermission);
 
         $childPermission1 = (new Permission())
             ->setIdentifier('LIST_ROLES')
             ->setLabel('List roles')
-            ->setParent($parentPermission1)
+            ->setParent($manageRolesPermission)
         ;
         $manager->persist($childPermission1);
 
         $childPermission2 = (new Permission())
             ->setIdentifier('VIEW_ROLE')
             ->setLabel('View roles')
-            ->setParent($parentPermission1)
+            ->setParent($manageRolesPermission)
         ;
         $manager->persist($childPermission2);
 
         $childPermission3 = (new Permission())
             ->setIdentifier('ADD_ROLE')
             ->setLabel('Add role')
-            ->setParent($parentPermission1)
+            ->setParent($manageRolesPermission)
         ;
         $manager->persist($childPermission3);
 
         $childPermission4 = (new Permission())
             ->setIdentifier('EDIT_ROLE')
             ->setLabel('Edit role')
-            ->setParent($parentPermission1)
+            ->setParent($manageRolesPermission)
         ;
         $manager->persist($childPermission4);
 
         $childPermission5 = (new Permission())
             ->setIdentifier('DELETE_ROLE')
             ->setLabel('Delete role')
-            ->setParent($parentPermission1)
+            ->setParent($manageRolesPermission)
         ;
         $manager->persist($childPermission5);
 

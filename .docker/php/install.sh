@@ -5,7 +5,7 @@ echo "-                create symfony project                           -"
 echo "-------------------------------------------------------------------"
 symfony self:version
 
-symfony new my_project --no-git --version=5.4 --php=8.2 --docker=false
+symfony new my_project --no-git --version=6.4 --php=8.3 --docker=false
 
 echo "-------------------------------------------------------------------"
 echo "-                   require packages                              -"
@@ -14,7 +14,7 @@ cd ./my_project
 cp .env .env.local
 cp .env .env.develop
 
-symfony composer require php:^8.2.0
+symfony composer require php:^8.3.0
 symfony composer require twig
 symfony composer require --no-interaction doctrine/orm doctrine/doctrine-migrations-bundle
 

@@ -17,7 +17,6 @@ class UserFixtures extends Fixture implements DependentFixtureInterface
     public function load(ObjectManager $manager): void
     {
         $password = $this->passwordHasher->hashPassword(new User(), 'pass_1234');
-        $role = $manager->getRepository(Role::class)->findOneBy(['name' => Role::ROLE_ADMIN]);
 
         $user = (new User())
             ->setFirstName('Admin')
@@ -25,7 +24,7 @@ class UserFixtures extends Fixture implements DependentFixtureInterface
             ->setEmail('ismail@moukafih.nl')
             ->setInactive(false)
             ->setPassword($password)
-            ->setRole($role)
+            ->setRole($this->getReference('admin-role', Role::class))
         ;
 
         $manager->persist($user);
